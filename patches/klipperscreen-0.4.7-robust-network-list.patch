@@ -1,0 +1,87 @@
+--- a/ks_includes/sdbus_nm.py
++++ b/ks_includes/sdbus_nm.py
+@@ -184,22 +184,34 @@
+     def get_networks(self):
+         networks = []
+         if self.wlan_device:
+-            all_aps = [AccessPoint(result) for result in self.wlan_device.access_points]
+-            networks.extend(
+-                {
+-                    "SSID": ap.ssid.decode("utf-8", errors='ignore'),
+-                    "known": self.is_known(ap.ssid.decode("utf-8", errors='ignore')),
+-                    "security": get_encryption(
+-                        ap.rsn_flags or ap.wpa_flags or ap.flags
+-                    ),
+-                    "frequency": WifiChannels(ap.frequency)[0],
+-                    "channel": WifiChannels(ap.frequency)[1],
+-                    "signal_level": ap.strength,
+-                    "BSSID": ap.hw_address,
+-                }
+-                for ap in all_aps
+-                if ap.ssid
+-            )
++            # Saved profiles are read ONCE: `is_known()` per AP re-read all of them over
++            # D-Bus (~3 ms a call on a Pi 2, but tens of thousands of calls with 65+ APs).
++            known_ssids = {net["SSID"] for net in self.get_known_networks()}
++            for path in self.wlan_device.access_points:
++                # NetworkManager removes access points while they are being walked (the scan does
++                # not stop); an AP that disappeared must not bring down the whole listing.
++                try:
++                    ap = AccessPoint(path)
++                    raw_ssid = ap.ssid
++                    if not raw_ssid:
++                        continue
++                    ssid = raw_ssid.decode("utf-8", errors='ignore')
++                    frequency, channel = WifiChannels(ap.frequency)[:2]
++                    networks.append(
++                        {
++                            "SSID": ssid,
++                            "known": ssid in known_ssids,
++                            "security": get_encryption(
++                                ap.rsn_flags or ap.wpa_flags or ap.flags
++                            ),
++                            "frequency": frequency,
++                            "channel": channel,
++                            "signal_level": ap.strength,
++                            "BSSID": ap.hw_address,
++                        }
++                    )
++                except Exception as e:
++                    logging.debug(f"AP {path} is gone: {e}")
+             return sorted(networks, key=lambda i: i["signal_level"], reverse=True)
+         return networks
+ 
+--- a/panels/network.py
++++ b/panels/network.py
+@@ -129,16 +129,19 @@
+         for net in self.sdbus_nm.get_networks():
+             if 'BSSID' not in net:
+                 continue
+-            self.add_network(net['BSSID'])
++            self.add_network(net['BSSID'], net)
+         GLib.timeout_add_seconds(10, self._gtk.Button_busy, self.reload_button, False)
+         self.content.show_all()
+         return False
+ 
+-    def add_network(self, bssid):
++    def add_network(self, bssid, net=None):
+         if bssid in self.network_rows:
+             return
+ 
+-        net = next(net for net in self.sdbus_nm.get_networks() if bssid == net['BSSID'])
++        if net is None:
++            net = next((n for n in self.sdbus_nm.get_networks() if bssid == n['BSSID']), None)
++        if net is None:  # the AP disappeared between the listing and this step
++            return
+         ssid = net['SSID']
+ 
+         connect = self._gtk.Button("load", None, "color3", self.bts)
+@@ -385,7 +388,7 @@
+             if not bssid:
+                 continue
+             if bssid not in self.network_rows:
+-                self.add_network(bssid)
++                self.add_network(bssid, net)
+             self.update_network_info(net)
+ 
+         for i, net in enumerate(nets):

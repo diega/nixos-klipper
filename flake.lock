@@ -1,0 +1,145 @@
+{
+  "nodes": {
+    "fluidd-config": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1732485178,
+        "narHash": "sha256-MyIAHgSoAm4bhkE0ENGMUni2U87a1svFc3rycU+ga4E=",
+        "owner": "fluidd-core",
+        "repo": "fluidd-config",
+        "rev": "807175d72e3a00cdc6b5e249444a4630e1e03a55",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fluidd-core",
+        "ref": "v1.2.1",
+        "repo": "fluidd-config",
+        "type": "github"
+      }
+    },
+    "fluidd-release": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794927790,
+        "narHash": "sha256-XHZiLrtwoKnJJ8E5rp1yt0qcpq5c+2Az0CFf/jSGpOA=",
+        "type": "tarball",
+        "url": "https://github.com/fluidd-core/fluidd/releases/download/v1.38.1/fluidd.zip"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://github.com/fluidd-core/fluidd/releases/download/v1.38.1/fluidd.zip"
+      }
+    },
+    "klipper-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1795189515,
+        "narHash": "sha256-5CajjGVRCaNed5hPQsDFHjYHQTXTWfeRyJtzRolZ784=",
+        "owner": "Klipper3d",
+        "repo": "klipper",
+        "rev": "c9559fa04ec6b11fb1a9a1610903546319fcf310",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Klipper3d",
+        "ref": "v0.14.0",
+        "repo": "klipper",
+        "type": "github"
+      }
+    },
+    "klipperscreen-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778703539,
+        "narHash": "sha256-hHaz1I9Wik2lw9UL6Z7HWsSep1oOqHhuawAfe67LRxM=",
+        "owner": "KlipperScreen",
+        "repo": "KlipperScreen",
+        "rev": "c5fcc279518e78af90071ee2bf46bf36c007fc16",
+        "type": "github"
+      },
+      "original": {
+        "owner": "KlipperScreen",
+        "ref": "v0.4.7",
+        "repo": "KlipperScreen",
+        "type": "github"
+      }
+    },
+    "moonraker-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787675697,
+        "narHash": "sha256-Nmfd5PJpuebov1LhEWD9dFVXFoPOPd7TfY3p8BzPB4M=",
+        "owner": "Arksine",
+        "repo": "moonraker",
+        "rev": "985c1d0bbeb90bc057d34a232c9dc3b05e0c6c8d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Arksine",
+        "ref": "v0.11.0",
+        "repo": "moonraker",
+        "type": "github"
+      }
+    },
+    "nixos-hardware": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1795018746,
+        "narHash": "sha256-glQAHvZGgBVjzGIWgIZYSf3X10gvtO2LPR4rtyP/Soc=",
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "rev": "33475966110df258f52d05ec4d4cd6394637cbb9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1789546076,
+        "narHash": "sha256-vWkSk5bbfTqdtMoSgD9FshACO8JCvXTFi+3cqEp0mH0=",
+        "rev": "b1b875982b17dabde9b4a37f3e229e74913e6db3",
+        "type": "tarball",
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1074753.b1b875982b17/nixexprs.tar.xz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1795137884,
+        "narHash": "sha256-iKXCN36qYfBni+3nH4vAd98/kshoIsPB2S9mYWhma30=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ab5c18fdedfc8f9bbc9d773f10a540790e2787a7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-26.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "fluidd-config": "fluidd-config",
+        "fluidd-release": "fluidd-release",
+        "klipper-src": "klipper-src",
+        "klipperscreen-src": "klipperscreen-src",
+        "moonraker-src": "moonraker-src",
+        "nixos-hardware": "nixos-hardware",
+        "nixpkgs": "nixpkgs_2"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
